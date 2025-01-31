@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:54:45 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/01/30 12:53:16 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/01/31 09:22:00 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	reverse_rotate_rotate(t_stack **stack_a, t_stack **stack_b);
 //*******************   sort.c   *******************************/
 void	ft_go_pushswap(t_stack **stack_a);
 int	ft_good_order(t_stack	*stack);
-int	ft_find_min(t_stack	*stack_a);
+int	ft_find_min(t_stack	*stack);
 int	ft_find_max(t_stack	*stack_a);
 
 //*******************   special_case.c   *******************************/
@@ -103,8 +103,8 @@ void	ft_for_three_high_first(t_stack **stack_a, t_stack *lastnode);
 void	ft_for_three(t_stack **stack_a, t_stack *lastnode);
 
 //*******************   for_five.c   *******************************/
-void	ft_for_five(t_stack	**stack_a, t_stack **stack_b, t_stack *lastnode);
-void	ft_bestmove_for_five(t_stack **stack_a, t_stack **stack_b, t_stack *lastnode, int size);
+void	ft_for_five(t_stack	**stack_a, t_stack **stack_b);
+void	ft_bestmove_for_five(t_stack **stack_a, t_stack **stack_b, int size);
 
 //*******************   for_five.c   *******************************/
 void	ft_over_five(t_stack **stack_a, int size);
