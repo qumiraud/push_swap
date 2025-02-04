@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:48:04 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/02/04 15:54:05 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:28:56 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,22 @@ void	bestmove_in_top_a_little(t_stack **stack_a, t_stack **stack_b, int *move)
 			i--;
 		}
 	}
-	while (i > 0)
+	if (i < ft_stacksize(*stack_a)/2)
 	{
-		rotate_a(stack_a);
-		i--;
+		while (i > 0)
+		{
+			rotate_a(stack_a);
+			i--;
+		}
+	}
+	else if (i >= ft_stacksize(*stack_a)/2)
+	{
+		i = ft_stacksize(*stack_a) - i;
+		while (i > 0)
+		{
+			reverse_rotate_a(stack_a);
+			i--;
+		}
 	}
 }
 
@@ -236,36 +248,75 @@ int	ft_cheapest_move(t_stack **stack_a, t_stack *stack_b)
 	size_b = ft_stacksize(nav_b);
 	i = 0;
 	j = size_b + ft_stacksize(nav_a) * 2;
-	while (nav_a && k <= size_b / 4)
+	while (nav_a)
 	{
-		i = 0;
-		nav_b = stack_b;
-		while (nav_b)
+		size_b = ft_stacksize(nav_b);
+		if (k <= size_b/5 || k >= (size_b/5) * 4)
 		{
-			search_proxi(nav_a->nbr, stack_b);
-			if (nav_a->nbr > nav_b->nbr  && nav_a->nbr > ft_find_min(nav_b) && nav_b->proxi == 1)
-				break;
-			else if (nav_a->nbr > ft_find_max(nav_b) && nav_b->nbr == ft_find_max(nav_b))
-				break;
-			else if (nav_a->nbr < ft_find_min(nav_b) && nav_b->nbr == ft_find_max(nav_b))
-				break;
-			i++;
-			nav_b = nav_b->next;
-		}
-		nav_b->proxi = 0;
-		if ( i < j)
-		{
-			j = i;
-			if (reset)
-				reset->bestmove = 0;
-			nav_a->bestmove = 1;
-			reset = nav_a;
-			if (j <= 2)
-				return (j);
+			i = 0;
+			nav_b = stack_b;
+			while (nav_b)
+			{
+				search_proxi(nav_a->nbr, stack_b);
+				if (nav_a->nbr > nav_b->nbr  && nav_a->nbr > ft_find_min(nav_b) && nav_b->proxi == 1)
+					break;
+				else if (nav_a->nbr > ft_find_max(nav_b) && nav_b->nbr == ft_find_max(nav_b))
+					break;
+				else if (nav_a->nbr < ft_find_min(nav_b) && nav_b->nbr == ft_find_max(nav_b))
+					break;
+				i++;
+				nav_b = nav_b->next;
+			}
+			nav_b->proxi = 0;
+			if ( i < j)
+			{
+				j = i;
+				if (reset)
+					reset->bestmove = 0;
+				nav_a->bestmove = 1;
+				reset = nav_a;
+				if (j <= 2)
+					return (j);
+			}
 		}
 		nav_a = nav_a->next;
 		k++;
 	}
+// 	while (k <= (size_b/4) * 3)
+// 	{
+// 		nav_a = nav_a->next;
+// 		k++;
+// 	}
+// 	while (k >= (size_b/4) * 3 && k < size_b)
+// 	{
+// 		i = 0;
+// 		nav_b = stack_b;
+// 		while (nav_b)
+// 		{
+// 			search_proxi(nav_a->nbr, stack_b);
+// 			if (nav_a->nbr > nav_b->nbr  && nav_a->nbr > ft_find_min(nav_b) && nav_b->proxi == 1)
+// 				break;
+// 			else if (nav_a->nbr > ft_find_max(nav_b) && nav_b->nbr == ft_find_max(nav_b))
+// 				break;
+// 			else if (nav_a->nbr < ft_find_min(nav_b) && nav_b->nbr == ft_find_max(nav_b))
+// 				break;
+// 			i++;
+// 			nav_b = nav_b->next;
+// 		}
+// 		nav_b->proxi = 0;
+// 		if ( i < j)
+// 		{
+// 			j = i;
+// 			if (reset)
+// 				reset->bestmove = 0;
+// 			nav_a->bestmove = 1;
+// 			reset = nav_a;
+// 			if (j <= 2)
+// 				return (j);
+// 		}
+// 		nav_a = nav_a->next;
+// 		k++;
+// 	}
 	return (j);
 }
 
@@ -274,20 +325,20 @@ int	ft_cheapest_move_for_return(t_stack **stack_a, t_stack *stack_b)
 	int		i;
 	int		j;
 	int		size_b;
-	int		k;
+	// int		k;
 
 	t_stack	*nav_a;
 	t_stack	*nav_b;
 	t_stack	*reset;
 
-	k = 0;
+	// k = 0;
 	nav_a = (*stack_a);
 	nav_b = stack_b;
 	reset = NULL;
 	size_b = ft_stacksize(nav_b);
 	i = 0;
 	j = size_b + ft_stacksize(nav_a) * 2;
-	while (nav_a && k <= size_b / 4)
+	while (nav_a)
 	{
 		i = 0;
 		nav_b = stack_b;
@@ -315,7 +366,7 @@ int	ft_cheapest_move_for_return(t_stack **stack_a, t_stack *stack_b)
 				return (j);
 		}
 		nav_a = nav_a->next;
-		k++;
+		// k++;
 	}
 	return (j);
 }
