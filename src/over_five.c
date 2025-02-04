@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:48:04 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/02/04 12:23:02 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:46:55 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,8 @@ void	bestmove_in_top_a_big(t_stack **stack_a, t_stack **stack_b, int *move)
 	}
 	if ((*move) > ft_stacksize(*stack_b)/2)
 		(*move) = ft_stacksize(*stack_b) - (*move);
-	printf("dans la fonction bestmovebig: %d\n", (*move));
 	if (i > ft_stacksize(*stack_a)/2 )
 	{
-		printf("par ici\n");
 		i = ft_stacksize(*stack_a) - i;
 		while ((*move) > 0 && i > 0)
 		{
@@ -69,6 +67,14 @@ void	bestmove_in_top_a_big(t_stack **stack_a, t_stack **stack_b, int *move)
 		while (i > 0)
 		{
 			reverse_rotate_a(stack_a);
+			i--;
+		}
+	}
+	else if (i < ft_stacksize(*stack_a)/2)
+	{
+		while (i > 0)
+		{
+			rotate_a(stack_a);
 			i--;
 		}
 	}
@@ -85,11 +91,8 @@ void	bestmove_in_top_a_little(t_stack **stack_a, t_stack **stack_b, int *move)
 		i++;
 		nav = nav->next;
 	}
-	printf("dans la fonction bestmovelittle: %d\n", (*move));
 	if ((*move) <= ft_stacksize(*stack_b)/2)
 	{
-		printf("par la\n");
-
 		while ((*move) > 0 && i > 0)
 		{
 			rotate_rotate(stack_a,stack_b);
@@ -102,7 +105,6 @@ void	bestmove_in_top_a_little(t_stack **stack_a, t_stack **stack_b, int *move)
 		rotate_a(stack_a);
 		i--;
 	}
-
 }
 
 void	reset_bestmove(t_stack **stack)
@@ -213,12 +215,9 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 	{
 		size_b = ft_stacksize(stack_b);
 		move =ft_cheapest_move(stack_a, stack_b);
-		ft_printstack(*stack_a, stack_b);
 		if (move <= size_b/2)
 		{
-			printf("entrer de la fonction bestmove_in_top_a: %d\n", move);
 			bestmove_in_top_a_little(stack_a, &stack_b, &move);
-			printf("sorti de la fonction bestmove_in_top_a: %d\n", move);
 			while (move > 0 )
 			{
 					rotate_b(&stack_b);
@@ -227,10 +226,7 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 		}
 		else
 		{
-			printf("entrer de la fonction bestmove_in_top_abig: %d\n", move);
 			bestmove_in_top_a_big(stack_a, &stack_b, &move);
-			printf("sorti de la fonction bestmove_in_top_abig: %d\n", move);
-			//move = size_b - (move);
 			while (move > 0)
 			{
 				reverse_rotate_b(&stack_b);
