@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:48:04 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/01/31 17:14:09 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:23:02 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	bestmove_in_top_b(t_stack **stack_b, t_stack **stack_a, int *move)
 	}
 }
 
-void	bestmove_in_top_a(t_stack **stack_a, t_stack **stack_b, int *move)
+void	bestmove_in_top_a_big(t_stack **stack_a, t_stack **stack_b, int *move)
 {
 	t_stack	*nav;
 	int		i;
@@ -53,27 +53,56 @@ void	bestmove_in_top_a(t_stack **stack_a, t_stack **stack_b, int *move)
 		i++;
 		nav = nav->next;
 	}
-	if (i > ft_stacksize(*stack_a)/2 && (*move) >= ft_stacksize(*stack_b)/2 )
+	if ((*move) > ft_stacksize(*stack_b)/2)
+		(*move) = ft_stacksize(*stack_b) - (*move);
+	printf("dans la fonction bestmovebig: %d\n", (*move));
+	if (i > ft_stacksize(*stack_a)/2 )
 	{
-		//move = ft_stacksize(*stack_b) - move;
-		while ((*move) >= 0 && (*stack_a)->bestmove != 1)
+		printf("par ici\n");
+		i = ft_stacksize(*stack_a) - i;
+		while ((*move) > 0 && i > 0)
 		{
 			reverse_rotate_rotate(stack_a, stack_b);
 			(*move)--;
+			i--;
 		}
-		while ((*stack_a)->bestmove != 1)
-			reverse_rotate_a(stack_a);
-	}
-	if (i <= ft_stacksize(*stack_a)/2)
-	{
-		while ((*move) > 0 &&  (*stack_a)->bestmove != 1)
+		while (i > 0)
 		{
-			rotate_rotate(stack_a, stack_b);
-			(*move)--;
+			reverse_rotate_a(stack_a);
+			i--;
 		}
-		while ((*stack_a)->bestmove != 1)
-			rotate_a(stack_a);
 	}
+}
+void	bestmove_in_top_a_little(t_stack **stack_a, t_stack **stack_b, int *move)
+{
+	t_stack	*nav;
+	int		i;
+
+	i = 0;
+	nav = (*stack_a);
+	while (nav->bestmove != 1)
+	{
+		i++;
+		nav = nav->next;
+	}
+	printf("dans la fonction bestmovelittle: %d\n", (*move));
+	if ((*move) <= ft_stacksize(*stack_b)/2)
+	{
+		printf("par la\n");
+
+		while ((*move) > 0 && i > 0)
+		{
+			rotate_rotate(stack_a,stack_b);
+			(*move)--;
+			i--;
+		}
+	}
+	while (i > 0)
+	{
+		rotate_a(stack_a);
+		i--;
+	}
+
 }
 
 void	reset_bestmove(t_stack **stack)
@@ -104,17 +133,14 @@ void	search_proxi(int ref, t_stack *stack)
 
 	while (nav)
 	{
-		// if (nav->nbr > ref)////////////////////////////////////////////////////////////////
+
 		if (nav->nbr > ref && nav->nbr < near)
 		{
-			//if (nav->nbr < near)////////////////////////////////////////////////////////////
-			//{
 			if (reset)
 				reset->proxi = 0;
 			near = nav->nbr;
 			nav->proxi = 1;
 			reset = nav;
-			//}
 		}
 		nav = nav->next;
 	}
@@ -137,7 +163,7 @@ int	ft_cheapest_move(t_stack **stack_a, t_stack *stack_b)
 	reset = NULL;
 	size_b = ft_stacksize(nav_b);
 	i = 0;
-	j = size_b + ft_stacksize(nav_a);
+	j = size_b + ft_stacksize(nav_a) * 2;
 	while (nav_a && k <= size_b / 4)
 	{
 		i = 0;
@@ -187,9 +213,12 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 	{
 		size_b = ft_stacksize(stack_b);
 		move =ft_cheapest_move(stack_a, stack_b);
-		if (move < size_b/2)
+		ft_printstack(*stack_a, stack_b);
+		if (move <= size_b/2)
 		{
-			bestmove_in_top_a(stack_a, &stack_b, &move);
+			printf("entrer de la fonction bestmove_in_top_a: %d\n", move);
+			bestmove_in_top_a_little(stack_a, &stack_b, &move);
+			printf("sorti de la fonction bestmove_in_top_a: %d\n", move);
 			while (move > 0 )
 			{
 					rotate_b(&stack_b);
@@ -198,8 +227,10 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 		}
 		else
 		{
-			bestmove_in_top_a(stack_a, &stack_b, &move);
-			move = size_b - (move);
+			printf("entrer de la fonction bestmove_in_top_abig: %d\n", move);
+			bestmove_in_top_a_big(stack_a, &stack_b, &move);
+			printf("sorti de la fonction bestmove_in_top_abig: %d\n", move);
+			//move = size_b - (move);
 			while (move > 0)
 			{
 				reverse_rotate_b(&stack_b);
@@ -216,7 +247,7 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 	while (ft_stacksize(stack_b) > 0)
 	{
 		size_a = ft_stacksize(*stack_a);
-		move =ft_cheapest_move(&stack_b, (*stack_a));
+		move = ft_cheapest_move(&stack_b, (*stack_a));
 		bestmove_in_top_b(&stack_b, stack_a, &move);
 		if (move <= size_a/2)
 		{
