@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:48:04 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/02/04 15:24:56 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:54:05 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	bestmove_in_top_b_big(t_stack **stack_b, t_stack **stack_a, int *move)
 		}
 		while (i > 0)
 		{
-			reverse_rotate_a(stack_b);
+			reverse_rotate_b(stack_b);
 			i--;
 		}
 	}
@@ -90,7 +90,7 @@ void	bestmove_in_top_a_big(t_stack **stack_a, t_stack **stack_b, int *move)
 
 	i = 0;
 	nav = (*stack_a);
-	printf ("coucou\n");
+	//printf ("coucou\n");
 	while (nav->bestmove != 1)
 	{
 		i++;
@@ -114,7 +114,7 @@ void	bestmove_in_top_a_big(t_stack **stack_a, t_stack **stack_b, int *move)
 			i--;
 		}
 	}
-	else if (i < ft_stacksize(*stack_a)/2)
+	else if (i <= ft_stacksize(*stack_a)/2)
 	{
 		while (i > 0)
 		{
@@ -352,7 +352,6 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 	{
 		size_b = ft_stacksize(stack_b);
 		move =ft_cheapest_move(stack_a, stack_b);
-		ft_printstack((*stack_a), stack_b);
 		if (move <= size_b/2)
 		{
 			bestmove_in_top_a_little(stack_a, &stack_b, &move);
@@ -382,6 +381,7 @@ void	ft_over_five(t_stack **stack_a, int size_a)
 	{
 		size_a = ft_stacksize(*stack_a);
 		move = ft_cheapest_move_for_return(&stack_b, (*stack_a));
+		//ft_printstack((*stack_a), stack_b);
 
 		//printf("after cheapestmove move value: %d\n", move);
 		if (move <= size_a/2)
