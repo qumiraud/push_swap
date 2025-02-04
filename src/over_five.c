@@ -12,6 +12,7 @@
 
 #include "../includes/push_swap.h"
 
+//coucou je teste un push depuis chez oim!
 void	bestmove_in_top_b_big(t_stack **stack_b, t_stack **stack_a, int *move)
 {
 	t_stack	*nav;
