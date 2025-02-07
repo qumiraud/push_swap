@@ -4,10 +4,12 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -g
 
 SRC_D = src
-SRC = $(SRC_D)/test.c $(SRC_D)/utils.c $(SRC_D)/atol.c $(SRC_D)/fullarg.c $(SRC_D)/list_functions.c\
+SRC = $(SRC_D)/utils.c $(SRC_D)/atol.c $(SRC_D)/fullarg.c $(SRC_D)/list_functions.c\
 		$(SRC_D)/errors.c $(SRC_D)/no_double.c $(SRC_D)/swap.c $(SRC_D)/main.c $(SRC_D)/push.c\
 		$(SRC_D)/rotate.c $(SRC_D)/reverse_rotate.c $(SRC_D)/sort.c $(SRC_D)/special_case.c\
-		$(SRC_D)/for_three.c $(SRC_D)/ft_printstack.c $(SRC_D)/for_five.c $(SRC_D)/over_five.c
+		$(SRC_D)/for_three.c $(SRC_D)/ft_printstack.c $(SRC_D)/for_five.c $(SRC_D)/over_five.c\
+		$(SRC_D)/cheapest_move.c $(SRC_D)/search_proxi.c $(SRC_D)/bestmove_in_a.c $(SRC_D)/bestmove_in_b.c\
+
 OBJ_D = .obj
 OBJ = $(addprefix $(OBJ_D)/, $(SRC:src/%.c=%.o))
 

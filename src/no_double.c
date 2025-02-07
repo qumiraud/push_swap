@@ -6,7 +6,7 @@
 /*   By: qumiraud <qumiraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 16:45:21 by qumiraud          #+#    #+#             */
-/*   Updated: 2025/01/14 13:01:10 by qumiraud         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:26:23 by qumiraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_nodouble(t_stack *stack_a)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	while (stack_a->next)
 	{
@@ -23,8 +23,7 @@ int	ft_nodouble(t_stack *stack_a)
 		{
 			if (tmp->nbr == stack_a->nbr)
 			{
-				ft_puterror_fd("Error\n", YELLOW);
-				//ft_puterror_fd(": double has been found.\n", YELLOW);
+				write(2, "Error\n", 6);
 				return (0);
 			}
 			tmp = tmp->next;
